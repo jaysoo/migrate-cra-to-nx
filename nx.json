@@ -1,5 +1,5 @@
 {
-  "npmScope": "migrated",
+  "npmScope": "acme",
   "implicitDependencies": {
     "workspace.json": "*",
     "package.json": {
@@ -18,5 +18,16 @@
       }
     }
   },
-  "projects": {}
+  "projects": {
+    "webapp": {
+      "tags": []
+    },
+    "webapp-e2e": {
+      "tags": [],
+      "implicitDependencies": ["webapp"]
+    },
+    "ui-button": {
+      "tags": []
+    }
+  }
 }

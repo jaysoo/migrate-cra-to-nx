@@ -1,8 +1,121 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "webapp": {
+      "root": "apps/webapp",
+      "sourceRoot": "apps/webapp/src",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "serve": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/webapp",
+            "command": "node ../../node_modules/.bin/react-scripts start"
+          }
+        },
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "outputs": ["apps/webapp/build"],
+          "options": {
+            "cwd": "apps/webapp",
+            "command": "node ../../node_modules/.bin/react-scripts build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/webapp",
+            "command": "node ../../node_modules/.bin/eslint src/**/*.tsx src/**/*.ts"
+          }
+        },
+        "test": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/webapp",
+            "command": "node ../../node_modules/.bin/react-scripts test --watchAll=false"
+          }
+        }
+      }
+    },
+    "webapp-e2e": {
+      "root": "apps/webapp-e2e",
+      "sourceRoot": "apps/webapp-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/webapp-e2e/cypress.json",
+            "tsConfig": "apps/webapp-e2e/tsconfig.e2e.json",
+            "devServerTarget": "webapp:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "webapp:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["apps/webapp-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/webapp-e2e/**/*"]
+          }
+        }
+      }
+    },
+    "ui-button": {
+      "root": "libs/ui-button",
+      "sourceRoot": "libs/ui-button/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "libs/ui-button/tsconfig.lib.json",
+              "libs/ui-button/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/ui-button/**/*"]
+          }
+        },
+        "build": {
+          "builder": "@nrwl/web:package",
+          "options": {
+            "outputPath": "dist/libs/ui-button",
+            "tsConfig": "libs/ui-button/tsconfig.lib.json",
+            "project": "libs/ui-button/package.json",
+            "entryFile": "libs/ui-button/src/index.ts",
+            "external": ["react", "react-dom"],
+            "babelConfig": "@nrwl/react/plugins/bundle-babel",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "README.md",
+                "input": ".",
+                "output": "."
+              }
+            ],
+            "extractCss": false
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ui-button/jest.config.js",
+            "tsConfig": "libs/ui-button/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/react"
   },
   "schematics": {
     "@nrwl/workspace": {
@@ -17,13 +130,19 @@
     },
     "@nrwl/react": {
       "application": {
-        "linter": "eslint"
+        "style": "css",
+        "linter": "eslint",
+        "babel": true
       },
       "library": {
+        "style": "css",
         "linter": "eslint"
       },
       "storybook-configuration": {
         "linter": "eslint"
+      },
+      "component": {
+        "style": "css"
       }
     },
     "@nrwl/next": {
@@ -62,5 +181,6 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "defaultProject": "webapp"
 }
