@@ -28,6 +28,5 @@
       "@acme/ui-button": ["libs/ui-button/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"],
-  "include": ["src"]
+  "exclude": ["node_modules", "tmp"]
 }
