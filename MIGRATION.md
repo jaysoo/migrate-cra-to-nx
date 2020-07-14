@@ -37,7 +37,7 @@ We can migrate an existing CRA app to Nx by customizing the CRA setup using [`re
    --project webapp \
    --command "node ../../node_modules/.bin/react-app-rewired build" \
    --cwd "apps/webapp" \
-   --outputPath "dist/apps/webapp"
+   --outputs "dist/apps/webapp"
 
    nx g @nrwl/workspace:run-commands lint \
    --project webapp \
@@ -71,7 +71,7 @@ We can migrate an existing CRA app to Nx by customizing the CRA setup using [`re
          "options": {
            "cwd": "apps/webapp",
            "command": "node ../../node_modules/.bin/react-app-rewired build",
-           "outputPath": "dist/apps/webapp"
+           "outputs": "dist/apps/webapp"
          }
        },
        "lint": {
